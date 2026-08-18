@@ -1,99 +1,140 @@
 import {
-  View,
-  Text,
-  Image,
-  StyleSheet,
+View,
+Text,
+Image,
+StyleSheet,
 } from 'react-native';
 
 export default function ProductDetailsScreen({ route }: any) {
-  const { produto } = route.params;
+const { ponto } = route.params;
 
-  return (
-    <View style={styles.container}>
+return (
+<View style={styles.container}>
 
-      <Image
-        source={produto.imagem}
-        style={styles.imagem}
-      />
+  <Image
+    source={ponto.imagem}
+    style={styles.imagem}
+  />
 
-      <Text style={styles.nome}>
-        {produto.nome}
-      </Text>
 
-      <Text style={styles.preco}>
-        R$ {produto.preco.toFixed(2).replace('.', ',')}
-      </Text>
+  <Text style={styles.nome}>
+    {ponto.nome}
+  </Text>
 
-      <Text style={styles.estoque}>
-        {produto.estoque} unidades disponíveis
-      </Text>
 
-      <View style={styles.caixaDescricao}>
-        <Text style={styles.tituloDescricao}>
-          Sobre o produto
-        </Text>
+  <View style={styles.caixa}>
 
-        <Text style={styles.descricao}>
-          Este produto está disponível para
-          doação através do Instituto Mão Amiga.
-        </Text>
-      </View>
 
-    </View>
-  );
+    <Text style={styles.titulo}>
+      Endereço
+    </Text>
+
+
+    <Text style={styles.texto}>
+      {ponto.endereco}
+    </Text>
+
+
+  </View>
+
+
+  <View style={styles.caixa}>
+
+
+    <Text style={styles.titulo}>
+      Dias e horários
+    </Text>
+
+
+    <Text style={styles.texto}>
+      {ponto.dias}
+    </Text>
+
+
+    <Text style={styles.texto}>
+      {ponto.horario}
+    </Text>
+
+
+  </View>
+
+
+  <View style={styles.caixa}>
+
+
+    <Text style={styles.titulo}>
+      O que recebe
+    </Text>
+
+
+    <Text style={styles.texto}>
+      {ponto.recebe}
+    </Text>
+
+
+  </View>
+
+
+  <View style={styles.caixa}>
+
+
+    <Text style={styles.titulo}>
+      O que distribui
+    </Text>
+
+
+    <Text style={styles.texto}>
+      {ponto.distribui}
+    </Text>
+
+
+  </View>
+
+
+</View>
+
+);
 }
 
 const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: '#F7F9F8',
-    padding: 20,
-  },
+container: {
+flex: 1,
+backgroundColor: '#F7F9F8',
+padding: 20,
+},
 
-  imagem: {
-    width: '100%',
-    height: 280,
-    borderRadius: 20,
-    marginTop: 10,
-  },
+imagem: {
+width: '100%',
+height: 180,
+borderRadius: 20,
+marginTop: 10,
+},
 
-  nome: {
-    fontSize: 28,
-    fontWeight: '800',
-    color: '#1B3A5C',
-    marginTop: 20,
-  },
+nome: {
+fontSize: 26,
+fontWeight: '800',
+color: '#1B3A5C',
+marginTop: 18,
+marginBottom: 12,
+},
 
-  preco: {
-    fontSize: 23,
-    fontWeight: '800',
-    color: '#2E7D32',
-    marginTop: 8,
-  },
+caixa: {
+backgroundColor: '#FFFFFF',
+borderRadius: 15,
+padding: 15,
+marginBottom: 10,
+},
 
-  estoque: {
-    fontSize: 14,
-    color: '#667085',
-    marginTop: 8,
-  },
+titulo: {
+fontSize: 15,
+fontWeight: '700',
+color: '#1B3A5C',
+marginBottom: 5,
+},
 
-  caixaDescricao: {
-    backgroundColor: '#FFFFFF',
-    borderRadius: 16,
-    padding: 18,
-    marginTop: 25,
-  },
-
-  tituloDescricao: {
-    fontSize: 18,
-    fontWeight: '700',
-    color: '#1B3A5C',
-    marginBottom: 8,
-  },
-
-  descricao: {
-    fontSize: 15,
-    lineHeight: 23,
-    color: '#475467',
-  },
+texto: {
+fontSize: 14,
+lineHeight: 21,
+color: '#667085',
+},
 });
