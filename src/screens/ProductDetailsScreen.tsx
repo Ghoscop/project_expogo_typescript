@@ -1,140 +1,156 @@
 import {
-View,
-Text,
-Image,
-StyleSheet,
+  View,
+  Text,
+  Image,
+  StyleSheet,
+  TouchableOpacity,
 } from 'react-native';
 
+import { useNavigation } from '@react-navigation/native';
+
 export default function ProductDetailsScreen({ route }: any) {
-const { ponto } = route.params;
+  const navigation = useNavigation<any>();
 
-return (
-<View style={styles.container}>
+  const { ponto } = route.params;
 
-  <Image
-    source={ponto.imagem}
-    style={styles.imagem}
-  />
+  return (
+    <View style={styles.container}>
 
+      <Image
+        source={ponto.imagem}
+        style={styles.imagem}
+      />
 
-  <Text style={styles.nome}>
-    {ponto.nome}
-  </Text>
+      <Text style={styles.nome}>
+        {ponto.nome}
+      </Text>
 
+      <View style={styles.caixa}>
 
-  <View style={styles.caixa}>
+        <Text style={styles.titulo}>
+          Endereço
+        </Text>
 
+        <Text style={styles.texto}>
+          {ponto.endereco}
+        </Text>
 
-    <Text style={styles.titulo}>
-      Endereço
-    </Text>
+      </View>
 
+      <View style={styles.caixa}>
 
-    <Text style={styles.texto}>
-      {ponto.endereco}
-    </Text>
+        <Text style={styles.titulo}>
+          Dias e horários
+        </Text>
 
+        <Text style={styles.texto}>
+          {ponto.dias}
+        </Text>
 
-  </View>
+        <Text style={styles.texto}>
+          {ponto.horario}
+        </Text>
 
+      </View>
 
-  <View style={styles.caixa}>
+      <View style={styles.caixa}>
 
+        <Text style={styles.titulo}>
+          O que recebe
+        </Text>
 
-    <Text style={styles.titulo}>
-      Dias e horários
-    </Text>
+        <Text style={styles.texto}>
+          {ponto.recebe}
+        </Text>
 
+      </View>
 
-    <Text style={styles.texto}>
-      {ponto.dias}
-    </Text>
+      <View style={styles.caixa}>
 
+        <Text style={styles.titulo}>
+          O que distribui
+        </Text>
 
-    <Text style={styles.texto}>
-      {ponto.horario}
-    </Text>
+        <Text style={styles.texto}>
+          {ponto.distribui}
+        </Text>
 
+      </View>
 
-  </View>
+      {/* BOTÃO DE DOAÇÃO */}
 
+      <TouchableOpacity
+        style={styles.botao}
+        onPress={() =>
+          navigation.navigate('Doacao', {
+            pontoId: ponto.id,
+            pontoNome: ponto.nome,
+          })
+        }
+      >
+        <Text style={styles.textoBotao}>
+          Fazer doação
+        </Text>
+      </TouchableOpacity>
 
-  <View style={styles.caixa}>
-
-
-    <Text style={styles.titulo}>
-      O que recebe
-    </Text>
-
-
-    <Text style={styles.texto}>
-      {ponto.recebe}
-    </Text>
-
-
-  </View>
-
-
-  <View style={styles.caixa}>
-
-
-    <Text style={styles.titulo}>
-      O que distribui
-    </Text>
-
-
-    <Text style={styles.texto}>
-      {ponto.distribui}
-    </Text>
-
-
-  </View>
-
-
-</View>
-
-);
+    </View>
+  );
 }
 
 const styles = StyleSheet.create({
-container: {
-flex: 1,
-backgroundColor: '#F7F9F8',
-padding: 20,
-},
+  container: {
+    flex: 1,
+    backgroundColor: '#F7F9F8',
+    padding: 20,
+  },
 
-imagem: {
-width: '100%',
-height: 180,
-borderRadius: 20,
-marginTop: 10,
-},
+  imagem: {
+    width: '100%',
+    height: 180,
+    borderRadius: 20,
+    marginTop: 10,
+  },
 
-nome: {
-fontSize: 26,
-fontWeight: '800',
-color: '#1B3A5C',
-marginTop: 18,
-marginBottom: 12,
-},
+  nome: {
+    fontSize: 26,
+    fontWeight: '800',
+    color: '#1B3A5C',
+    marginTop: 18,
+    marginBottom: 12,
+  },
 
-caixa: {
-backgroundColor: '#FFFFFF',
-borderRadius: 15,
-padding: 15,
-marginBottom: 10,
-},
+  caixa: {
+    backgroundColor: '#FFFFFF',
+    borderRadius: 15,
+    padding: 15,
+    marginBottom: 10,
+  },
 
-titulo: {
-fontSize: 15,
-fontWeight: '700',
-color: '#1B3A5C',
-marginBottom: 5,
-},
+  titulo: {
+    fontSize: 15,
+    fontWeight: '700',
+    color: '#1B3A5C',
+    marginBottom: 5,
+  },
 
-texto: {
-fontSize: 14,
-lineHeight: 21,
-color: '#667085',
-},
+  texto: {
+    fontSize: 14,
+    lineHeight: 21,
+    color: '#667085',
+  },
+
+  botao: {
+    backgroundColor: '#2E7D32',
+    borderRadius: 15,
+    paddingVertical: 16,
+    alignItems: 'center',
+    marginTop: 10,
+    marginBottom: 20,
+  },
+
+  textoBotao: {
+    color: '#FFFFFF',
+    fontSize: 17,
+    fontWeight: '700',
+  },
 });

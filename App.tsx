@@ -3,38 +3,38 @@ import { createNativeStackNavigator } from '@react-navigation/native-stack';
 
 import PontosScreen from './src/screens/PontosScreen';
 import ProductDetailsScreen from './src/screens/ProductDetailsScreen';
+import DoacaoScreen from './src/screens/DoacaoScreen';
 
 const Stack = createNativeStackNavigator();
 
 export default function App() {
-return (
-<NavigationContainer>
+  return (
+    <NavigationContainer>
+      <Stack.Navigator>
+        <Stack.Screen
+          name="Pontos"
+          component={PontosScreen}
+          options={{
+            title: 'Pontos de Apoio',
+          }}
+        />
 
-  <Stack.Navigator>
+        <Stack.Screen
+          name="Descricao"
+          component={ProductDetailsScreen}
+          options={{
+            title: 'Detalhes do ponto',
+          }}
+        />
 
-
-    <Stack.Screen
-      name="Pontos"
-      component={PontosScreen}
-      options={{
-        title: 'Pontos de Apoio',
-      }}
-    />
-
-
-    <Stack.Screen
-      name="Descrição"
-      component={ProductDetailsScreen}
-      options={{
-        title: 'Detalhes do ponto',
-      }}
-    />
-
-
-  </Stack.Navigator>
-
-
-</NavigationContainer>
-
-);
+        <Stack.Screen
+          name="Doacao"
+          component={DoacaoScreen}
+          options={{
+            title: 'Fazer Doação',
+          }}
+        />
+      </Stack.Navigator>
+    </NavigationContainer>
+  );
 }
