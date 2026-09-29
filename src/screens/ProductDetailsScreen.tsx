@@ -4,6 +4,7 @@ import {
   Image,
   StyleSheet,
   TouchableOpacity,
+  ScrollView,
 } from 'react-native';
 
 import { useNavigation } from '@react-navigation/native';
@@ -14,7 +15,11 @@ export default function ProductDetailsScreen({ route }: any) {
   const { ponto } = route.params;
 
   return (
-    <View style={styles.container}>
+    <ScrollView
+      style={styles.scroll}
+      contentContainerStyle={styles.container}
+      showsVerticalScrollIndicator={false}
+    >
 
       <Image
         source={ponto.imagem}
@@ -77,8 +82,6 @@ export default function ProductDetailsScreen({ route }: any) {
 
       </View>
 
-      {/* BOTÃO DE DOAÇÃO */}
-
       <TouchableOpacity
         style={styles.botao}
         onPress={() =>
@@ -93,15 +96,19 @@ export default function ProductDetailsScreen({ route }: any) {
         </Text>
       </TouchableOpacity>
 
-    </View>
+    </ScrollView>
   );
 }
 
 const styles = StyleSheet.create({
-  container: {
+  scroll: {
     flex: 1,
     backgroundColor: '#F7F9F8',
+  },
+
+  container: {
     padding: 20,
+    paddingBottom: 40,
   },
 
   imagem: {

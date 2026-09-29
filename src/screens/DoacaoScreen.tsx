@@ -47,12 +47,25 @@ export default function DoacaoScreen({ route, navigation }: any) {
         'Sua doação foi salva com sucesso.',
         [
           {
-            text: 'OK',
-            onPress: () => navigation.goBack(),
+            text: 'Fazer outra',
+            onPress: () => {
+              setNomeDoador('');
+              setTipo('');
+              setQuantidade('');
+              setObservacao('');
+            },
+          },
+          {
+            text: 'Finalizar',
+            onPress: () => {
+              navigation.popToTop();
+            },
           },
         ]
       );
     } catch (error) {
+      console.log('ERRO AO SALVAR:', error);
+
       Alert.alert(
         'Erro',
         'Não foi possível salvar a doação.'
