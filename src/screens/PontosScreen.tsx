@@ -25,6 +25,17 @@ export default function PontosScreen() {
         Instituto Mão Amiga
       </Text>
 
+    <TouchableOpacity
+        style={styles.botaoHistorico}
+        onPress={() => navigation.navigate('Doacoes')}
+    >
+      
+      <Text style={styles.textoBotaoHistorico}>
+          Minhas doações
+      </Text>
+    </TouchableOpacity>
+
+
       <FlatList
         data={pontos}
         keyExtractor={(item) => item.id}
@@ -88,52 +99,66 @@ const styles = StyleSheet.create({
     marginBottom: 22,
   },
 
-  card: {
-    flexDirection: 'row',
-    backgroundColor: '#FFFFFF',
-    borderRadius: 18,
-    padding: 12,
-    marginBottom: 15,
+  botaoHistorico: {
+  backgroundColor: '#1B3A5C',
+  borderRadius: 12,
+  paddingVertical: 14,
+  alignItems: 'center',
+  marginBottom: 18,
+},
 
-    elevation: 4,
+textoBotaoHistorico: {
+  color: '#FFFFFF',
+  fontSize: 16,
+  fontWeight: '700',
+},
 
-    shadowColor: '#1B3A5C',
-    shadowOffset: {
-      width: 0,
-      height: 3,
-    },
-    shadowOpacity: 0.08,
-    shadowRadius: 8,
+card: {
+  flexDirection: 'row',
+  backgroundColor: '#FFFFFF',
+  borderRadius: 18,
+  padding: 12,
+  marginBottom: 15,
+
+  elevation: 4,
+
+  shadowColor: '#1B3A5C',
+  shadowOffset: {
+    width: 0,
+    height: 3,
   },
+  shadowOpacity: 0.08,
+  shadowRadius: 8,
+},
 
-  imagem: {
-    width: 90,
-    height: 90,
-    borderRadius: 14,
-  },
+imagem: {
+  width: 90,
+  height: 90,
+  borderRadius: 14,
+},
 
-  info: {
-    flex: 1,
-    marginLeft: 14,
-    justifyContent: 'center',
-  },
+info: {
+  flex: 1,
+  marginLeft: 14,
+  justifyContent: 'center',
+},
 
-  nome: {
-    fontSize: 17,
-    fontWeight: '700',
-    color: '#1B3A5C',
-  },
+nome: {
+  fontSize: 17,
+  fontWeight: '700',
+  color: '#1B3A5C',
+},
 
-  endereco: {
-    fontSize: 13,
-    color: '#667085',
-    marginTop: 6,
-  },
+endereco: {
+  fontSize: 13,
+  color: '#667085',
+  marginTop: 6,
+},
 
-  horario: {
-    fontSize: 12,
-    fontWeight: '600',
-    color: '#2E7D32',
-    marginTop: 7,
-  },
+horario: {
+  fontSize: 12,
+  fontWeight: '600',
+  color: '#2E7D32',
+  marginTop: 7,
+},
 });

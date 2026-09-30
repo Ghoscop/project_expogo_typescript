@@ -4,6 +4,7 @@ import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import PontosScreen from './src/screens/PontosScreen';
 import ProductDetailsScreen from './src/screens/ProductDetailsScreen';
 import DoacaoScreen from './src/screens/DoacaoScreen';
+import DoacoesScreen from './src/screens/DoacoesScreen';
 
 const Stack = createNativeStackNavigator();
 
@@ -34,6 +35,15 @@ export default function App() {
             title: 'Fazer Doação',
           }}
         />
+
+        <Stack.Screen
+          name="Doacoes"
+          component={DoacoesScreen}
+          options={{
+            title: 'Minhas doações',
+          }}
+        />
+
       </Stack.Navigator>
     </NavigationContainer>
   );
