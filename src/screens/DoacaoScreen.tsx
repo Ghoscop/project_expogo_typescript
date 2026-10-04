@@ -46,10 +46,29 @@ export default function DoacaoScreen({
   );
 
   async function handleSalvarDoacao() {
-    if (!nomeDoador || !tipo || !quantidade) {
+    const quantidadeNumerica = Number(
+      quantidade.replace(',', '.')
+    );
+
+    if (
+      !nomeDoador.trim() ||
+      !tipo.trim() ||
+      !quantidade.trim()
+    ) {
       Alert.alert(
         'Atenção',
         'Preencha seu nome, o tipo de doação e a quantidade.'
+      );
+      return;
+    }
+
+    if (
+      !Number.isFinite(quantidadeNumerica) ||
+      quantidadeNumerica <= 0
+    ) {
+      Alert.alert(
+        'Atenção',
+        'A quantidade deve ser um número maior que zero.'
       );
       return;
     }
@@ -58,10 +77,10 @@ export default function DoacaoScreen({
       if (estaEditando) {
         const doacaoAtualizada: Doacao = {
           ...doacao,
-          nomeDoador,
-          tipo,
+          nomeDoador: nomeDoador.trim(),
+          tipo: tipo.trim(),
           quantidade,
-          observacao,
+          observacao: observacao.trim(),
         };
 
         await atualizarDoacao(doacaoAtualizada);
@@ -86,10 +105,10 @@ export default function DoacaoScreen({
         id: Date.now().toString(),
         pontoId: pontoId || '',
         pontoNome: pontoNome || '',
-        nomeDoador,
-        tipo,
+        nomeDoador: nomeDoador.trim(),
+        tipo: tipo.trim(),
         quantidade,
-        observacao,
+        observacao: observacao.trim(),
         data: new Date().toISOString(),
       };
 
@@ -174,9 +193,13 @@ export default function DoacaoScreen({
 
       <TextInput
         style={styles.input}
-        placeholder="Ex: 5 kg, 3 peças..."
+        placeholder="Ex: 5"
         value={quantidade}
-        onChangeText={setQuantidade}
+        onChangeText={(texto) => {
+          const valor = texto.replace(/[^0-9.,]/g, '');
+          setQuantidade(valor);
+        }}
+        keyboardType="numeric"
       />
 
       <Text style={styles.label}>
