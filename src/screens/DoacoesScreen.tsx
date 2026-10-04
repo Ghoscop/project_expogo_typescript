@@ -5,6 +5,7 @@ import {
   FlatList,
   StyleSheet,
   TouchableOpacity,
+  TextInput,
 } from 'react-native';
 
 import { useFocusEffect } from '@react-navigation/native';
@@ -21,9 +22,9 @@ function DoacaoItem({
   doacao: Doacao;
   onPress: () => void;
 }) {
-  const dataFormatada = new Date(doacao.data).toLocaleDateString(
-    'pt-BR'
-  );
+  const dataFormatada = new Date(
+    doacao.data
+  ).toLocaleDateString('pt-BR');
 
   return (
     <TouchableOpacity
@@ -57,6 +58,7 @@ export default function DoacoesScreen({
   navigation,
 }: any) {
   const [doacoes, setDoacoes] = useState<Doacao[]>([]);
+  const [busca, setBusca] = useState('');
 
   async function carregarDoacoes() {
     const dados = await buscarDoacoes();
@@ -73,16 +75,20 @@ export default function DoacoesScreen({
     navigation.navigate('Pontos');
   }
 
+  const doacoesFiltradas = doacoes.filter((doacao) =>
+    doacao.tipo
+      .toLowerCase()
+      .includes(busca.toLowerCase())
+  );
+
   return (
     <View style={styles.container}>
-
       <Text style={styles.titulo}>
         Minhas doações
       </Text>
 
       {doacoes.length === 0 ? (
         <View style={styles.vazio}>
-
           <Text style={styles.textoVazio}>
             Você ainda não possui nenhuma doação registrada.
           </Text>
@@ -95,26 +101,56 @@ export default function DoacoesScreen({
               Fazer uma doação
             </Text>
           </TouchableOpacity>
-
         </View>
       ) : (
-        <FlatList
-          data={doacoes}
-          keyExtractor={(item) => item.id}
-          showsVerticalScrollIndicator={false}
-          renderItem={({ item }) => (
-            <DoacaoItemMemo
-              doacao={item}
-              onPress={() => {
-                navigation.navigate('DetalheDoacao', {
-                  doacao: item,
-                });
-              }}
+        <>
+          <View style={styles.buscaContainer}>
+            <TextInput
+              style={styles.inputBusca}
+              placeholder="Buscar por tipo..."
+              value={busca}
+              onChangeText={setBusca}
+              returnKeyType="search"
+            />
+
+            {busca.length > 0 && (
+              <TouchableOpacity
+                style={styles.botaoLimpar}
+                onPress={() => setBusca('')}
+              >
+                <Text style={styles.textoLimpar}>
+                  Limpar
+                </Text>
+              </TouchableOpacity>
+            )}
+          </View>
+
+          {doacoesFiltradas.length === 0 ? (
+            <View style={styles.vazioBusca}>
+              <Text style={styles.textoVazio}>
+                Nenhuma doação encontrada para "{busca}".
+              </Text>
+            </View>
+          ) : (
+            <FlatList
+              data={doacoesFiltradas}
+              keyExtractor={(item) => item.id}
+              showsVerticalScrollIndicator={false}
+              keyboardShouldPersistTaps="handled"
+              renderItem={({ item }) => (
+                <DoacaoItemMemo
+                  doacao={item}
+                  onPress={() => {
+                    navigation.navigate('DetalheDoacao', {
+                      doacao: item,
+                    });
+                  }}
+                />
+              )}
             />
           )}
-        />
+        </>
       )}
-
     </View>
   );
 }
@@ -139,7 +175,6 @@ const styles = StyleSheet.create({
     borderRadius: 18,
     padding: 16,
     marginBottom: 14,
-
     shadowColor: '#1B3A5C',
     shadowOffset: {
       width: 0,
@@ -147,7 +182,6 @@ const styles = StyleSheet.create({
     },
     shadowOpacity: 0.08,
     shadowRadius: 8,
-
     elevation: 4,
   },
 
@@ -198,5 +232,40 @@ const styles = StyleSheet.create({
     color: '#FFFFFF',
     fontSize: 16,
     fontWeight: '700',
+  },
+
+  buscaContainer: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    marginBottom: 15,
+  },
+
+  inputBusca: {
+    flex: 1,
+    backgroundColor: '#FFFFFF',
+    borderWidth: 1,
+    borderColor: '#D0D5DD',
+    borderRadius: 12,
+    paddingHorizontal: 15,
+    paddingVertical: 12,
+    fontSize: 16,
+  },
+
+  botaoLimpar: {
+    marginLeft: 8,
+    paddingVertical: 12,
+    paddingHorizontal: 12,
+  },
+
+  textoLimpar: {
+    color: '#1B3A5C',
+    fontWeight: '700',
+  },
+
+  vazioBusca: {
+    flex: 1,
+    justifyContent: 'center',
+    alignItems: 'center',
+    paddingHorizontal: 20,
   },
 });
