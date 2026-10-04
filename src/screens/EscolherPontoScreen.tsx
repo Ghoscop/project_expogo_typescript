@@ -32,8 +32,10 @@ export default function EscolherPontoScreen() {
         {/* CABEÇALHO */}
         <View style={styles.header}>
 
+          {/* VOLTAR */}
           <TouchableOpacity
             style={styles.botaoVoltar}
+            activeOpacity={0.8}
             onPress={() => navigation.goBack()}
           >
             <Ionicons
@@ -43,6 +45,7 @@ export default function EscolherPontoScreen() {
             />
           </TouchableOpacity>
 
+          {/* LOGO */}
           <View style={styles.iconeHeader}>
             <Ionicons
               name="heart"
@@ -51,6 +54,7 @@ export default function EscolherPontoScreen() {
             />
           </View>
 
+          {/* TÍTULOS */}
           <View style={styles.headerTexto}>
             <Text style={styles.titulo}>
               Escolha um ponto
@@ -60,6 +64,21 @@ export default function EscolherPontoScreen() {
               Onde você deseja fazer sua doação?
             </Text>
           </View>
+
+          {/* NOTIFICAÇÕES */}
+          <TouchableOpacity
+            style={styles.notificacao}
+            activeOpacity={0.8}
+            onPress={() =>
+              navigation.navigate('Notificacoes')
+            }
+          >
+            <Ionicons
+              name="notifications-outline"
+              size={22}
+              color="#16834A"
+            />
+          </TouchableOpacity>
 
         </View>
 
@@ -100,13 +119,16 @@ export default function EscolherPontoScreen() {
               onPress={() => escolherPonto(item)}
             >
 
+              {/* IMAGEM */}
               <Image
                 source={{ uri: item.imagem }}
                 style={styles.imagem}
               />
 
+              {/* INFORMAÇÕES */}
               <View style={styles.info}>
 
+                {/* STATUS */}
                 <View style={styles.status}>
                   <View style={styles.statusPonto} />
 
@@ -115,6 +137,7 @@ export default function EscolherPontoScreen() {
                   </Text>
                 </View>
 
+                {/* NOME */}
                 <Text
                   style={styles.nome}
                   numberOfLines={2}
@@ -122,6 +145,7 @@ export default function EscolherPontoScreen() {
                   {item.nome}
                 </Text>
 
+                {/* ENDEREÇO */}
                 <View style={styles.linha}>
 
                   <Ionicons
@@ -139,6 +163,7 @@ export default function EscolherPontoScreen() {
 
                 </View>
 
+                {/* HORÁRIO */}
                 <View style={styles.linha}>
 
                   <Ionicons
@@ -155,6 +180,7 @@ export default function EscolherPontoScreen() {
 
               </View>
 
+              {/* BOTÃO */}
               <View style={styles.botaoSelecionar}>
                 <Ionicons
                   name="arrow-forward"
@@ -184,10 +210,12 @@ const styles = StyleSheet.create({
     backgroundColor: '#F5F8F6',
   },
 
+  /* HEADER */
+
   header: {
     backgroundColor: '#FFFFFF',
-    paddingHorizontal: 20,
-    paddingVertical: 18,
+    paddingHorizontal: 16,
+    paddingVertical: 14,
     flexDirection: 'row',
     alignItems: 'center',
     borderBottomWidth: 1,
@@ -195,23 +223,23 @@ const styles = StyleSheet.create({
   },
 
   botaoVoltar: {
-    width: 42,
-    height: 42,
+    width: 40,
+    height: 40,
     borderRadius: 13,
     backgroundColor: '#F1F5F3',
     justifyContent: 'center',
     alignItems: 'center',
-    marginRight: 12,
+    marginRight: 9,
   },
 
   iconeHeader: {
-    width: 46,
-    height: 46,
-    borderRadius: 15,
+    width: 44,
+    height: 44,
+    borderRadius: 14,
     backgroundColor: '#16834A',
     justifyContent: 'center',
     alignItems: 'center',
-    marginRight: 12,
+    marginRight: 10,
   },
 
   headerTexto: {
@@ -219,16 +247,28 @@ const styles = StyleSheet.create({
   },
 
   titulo: {
-    fontSize: 20,
+    fontSize: 18,
     fontWeight: '800',
     color: '#123B32',
   },
 
   subtitulo: {
-    fontSize: 12,
+    fontSize: 11,
     color: '#667085',
     marginTop: 3,
   },
+
+  notificacao: {
+    width: 42,
+    height: 42,
+    borderRadius: 13,
+    backgroundColor: '#E8F7EF',
+    justifyContent: 'center',
+    alignItems: 'center',
+    marginLeft: 8,
+  },
+
+  /* AVISO */
 
   aviso: {
     margin: 20,
@@ -265,10 +305,14 @@ const styles = StyleSheet.create({
     marginTop: 3,
   },
 
+  /* LISTA */
+
   lista: {
     paddingHorizontal: 20,
     paddingBottom: 25,
   },
+
+  /* CARD */
 
   card: {
     backgroundColor: '#FFFFFF',
@@ -353,6 +397,8 @@ const styles = StyleSheet.create({
     color: '#16834A',
     fontWeight: '700',
   },
+
+  /* BOTÃO SELECIONAR */
 
   botaoSelecionar: {
     width: 38,

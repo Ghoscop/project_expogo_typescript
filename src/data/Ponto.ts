@@ -20,7 +20,7 @@ export const pontos: Ponto[] = [
     distribui:
       'Alimentos, roupas, brinquedos, produtos de higiene e acessórios',
     imagem:
-      'https://casadacriancasantos.org.br/upload/texto/2025/5/158/original/b69a2ae7-14f7-4f4d-8e56-181fcaacc5b0.jpg',
+      'https://s2.glbimg.com/2f13BtoR1eBdIBkceWHediQyPCo=/1200x630/filters:max_age(3600)/s03.video.glbimg.com/deo/vi/66/21/3342166',
   },
 
   {

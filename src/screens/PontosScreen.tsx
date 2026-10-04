@@ -194,11 +194,9 @@ export default function PontosScreen() {
         {/* NAVEGAÇÃO INFERIOR */}
         <View style={styles.bottomNav}>
 
-          {/* INÍCIO */}
           <TouchableOpacity
             style={styles.navItem}
-            activeOpacity={0.8}
-            onPress={() => navigation.navigate('Pontos')}
+            onPress={() => navigation.navigate('Inicio')}
           >
             <Ionicons
               name="home-outline"
@@ -211,10 +209,9 @@ export default function PontosScreen() {
             </Text>
           </TouchableOpacity>
 
-          {/* PONTOS */}
+          {/* Pontos */}
           <TouchableOpacity
             style={styles.navItem}
-            activeOpacity={0.8}
             onPress={() => navigation.navigate('Pontos')}
           >
             <Ionicons
@@ -228,52 +225,52 @@ export default function PontosScreen() {
             </Text>
           </TouchableOpacity>
 
-          {/* NOVA DOAÇÃO */}
-          <TouchableOpacity
-            style={styles.botaoCentral}
-            activeOpacity={0.85}
-            onPress={() => navigation.navigate('EscolherPonto')}
-          >
-            <Ionicons
-              name="add"
-              size={32}
-              color="#FFFFFF"
-            />
-          </TouchableOpacity>
+            {/* NOVA DOAÇÃO */}
+        <TouchableOpacity
+          style={styles.botaoCentral}
+          activeOpacity={0.85}
+          onPress={() => navigation.navigate('EscolherPonto')}
+        >
+          <Ionicons
+            name="add"
+            size={32}
+            color="#FFFFFF"
+          />
+        </TouchableOpacity>
 
-          {/* MINHAS DOAÇÕES */}
-          <TouchableOpacity
-            style={styles.navItem}
-            activeOpacity={0.8}
-            onPress={() => navigation.navigate('Doacoes')}
-          >
-            <Ionicons
-              name="heart-outline"
-              size={23}
-              color="#98A2B3"
-            />
+        {/* MINHAS DOAÇÕES */}
+        <TouchableOpacity
+          style={styles.navItem}
+          activeOpacity={0.8}
+          onPress={() => navigation.navigate('Doacoes')}
+        >
+          <Ionicons
+            name="heart-outline"
+            size={23}
+            color="#98A2B3"
+          />
 
-            <Text style={styles.navTexto}>
-              Doações
-            </Text>
-          </TouchableOpacity>
+          <Text style={styles.navTexto}>
+            Doações
+          </Text>
+        </TouchableOpacity>
 
-          {/* PERFIL */}
-          <TouchableOpacity
-            style={styles.navItem}
-            activeOpacity={0.8}
-            onPress={() => navigation.navigate('Perfil')}
-          >
-            <Ionicons
-              name="person-outline"
-              size={23}
-              color="#98A2B3"
-            />
+        {/* PERFIL */}
+        <TouchableOpacity
+          style={styles.navItem}
+          activeOpacity={0.8}
+          onPress={() => navigation.navigate('Perfil')}
+        >
+          <Ionicons
+            name="person-outline"
+            size={23}
+            color="#98A2B3"
+          />
 
-            <Text style={styles.navTexto}>
-              Perfil
-            </Text>
-          </TouchableOpacity>
+          <Text style={styles.navTexto}>
+            Perfil
+          </Text>
+        </TouchableOpacity>
 
         </View>
 

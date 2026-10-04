@@ -643,6 +643,8 @@ export default function DoacoesScreen({
 
           <TouchableOpacity
             style={styles.navItem}
+            activeOpacity={0.8}
+            onPress={() => navigation.navigate('Perfil')}
           >
             <Ionicons
               name="person-outline"

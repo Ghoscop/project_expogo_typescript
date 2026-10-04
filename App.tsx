@@ -8,69 +8,70 @@ import DoacoesScreen from './src/screens/DoacoesScreen';
 import DetalheDoacaoScreen from './src/screens/DoacaoDetailsScreen';
 import PerfilScreen from './src/screens/PerfilScreen';
 import EscolherPontoScreen from './src/screens/EscolherPontoScreen';
+import NotificacoesScreen from './src/screens/NotificacoesScreen';
+import InicioScreen from './src/screens/InicioScreen';
+import SobreScreen from './src/screens/SobreScreen';
 
 const Stack = createNativeStackNavigator();
 
 export default function App() {
   return (
     <NavigationContainer>
-      <Stack.Navigator>
-        <Stack.Screen
-          name="Pontos"
-          component={PontosScreen}
-          options={{
-            title: 'Pontos de Apoio',
-          }}
-        />
+    <Stack.Navigator
+      screenOptions={{
+        headerShown: false,
+      }}
+    >
+      <Stack.Screen
+        name="Inicio"
+        component={InicioScreen}
+      />
 
-        <Stack.Screen
-          name="Descricao"
-          component={ProductDetailsScreen}
-          options={{
-            title: 'Detalhes do ponto',
-          }}
-        />
+      <Stack.Screen
+        name="Pontos"
+        component={PontosScreen}
+      />
 
-        <Stack.Screen
-          name="Doacao"
-          component={DoacaoScreen}
-          options={{
-            title: 'Fazer Doação',
-          }}
-        />
+      <Stack.Screen
+        name="Descricao"
+        component={ProductDetailsScreen}
+      />
 
-        <Stack.Screen
-          name="DetalheDoacao"
-          component={DetalheDoacaoScreen}
-          options={{
-            title: 'Detalhes da doação',
-          }}
-        />
+      <Stack.Screen
+        name="Doacao"
+        component={DoacaoScreen}
+      />
 
-        <Stack.Screen
-          name="Doacoes"
-          component={DoacoesScreen}
-          options={{
-            title: 'Minhas doações',
-          }}
-        />
+      <Stack.Screen
+        name="DetalheDoacao"
+        component={DetalheDoacaoScreen}
+      />
 
-        <Stack.Screen
-          name="Perfil"
-          component={PerfilScreen}
-          options={{
-            title: 'Perfil',
-          }}
-        />
-        <Stack.Screen
-          name="EscolherPonto"
-          component={EscolherPontoScreen}
-          options={{
-            headerShown: false,
-          }}
-        />
+      <Stack.Screen
+        name="Doacoes"
+        component={DoacoesScreen}
+      />
 
-      </Stack.Navigator>
+      <Stack.Screen
+        name="Perfil"
+        component={PerfilScreen}
+      />
+
+      <Stack.Screen
+        name="Sobre"
+        component={SobreScreen}
+      />
+
+      <Stack.Screen
+        name="EscolherPonto"
+        component={EscolherPontoScreen}
+      />
+
+      <Stack.Screen
+        name="Notificacoes"
+        component={NotificacoesScreen}
+      />
+    </Stack.Navigator>
     </NavigationContainer>
   );
 }
