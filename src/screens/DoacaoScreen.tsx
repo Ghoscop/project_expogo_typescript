@@ -148,7 +148,10 @@ export default function DoacaoScreen({
   }
 
   return (
-    <ScrollView contentContainerStyle={styles.container}>
+    <ScrollView
+    contentContainerStyle={styles.container}
+    keyboardShouldPersistTaps="handled"
+    >
       <Text style={styles.titulo}>
         {estaEditando
           ? 'Editar doação'

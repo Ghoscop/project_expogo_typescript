@@ -360,6 +360,10 @@ const styles = StyleSheet.create({
     marginLeft: 8,
     paddingVertical: 12,
     paddingHorizontal: 12,
+    minHeight: 44,
+    minWidth: 44,
+    justifyContent: 'center',
+    alignItems: 'center',
   },
 
   textoLimpar: {
