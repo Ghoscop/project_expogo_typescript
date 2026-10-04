@@ -9,15 +9,41 @@ import {
   ScrollView,
 } from 'react-native';
 
-import { salvarDoacao } from '../data/Doacao';
+import {
+  salvarDoacao,
+  atualizarDoacao,
+  Doacao,
+} from '../data/Doacao';
 
-export default function DoacaoScreen({ route, navigation }: any) {
-  const { pontoId, pontoNome } = route.params || {};
+export default function DoacaoScreen({
+  route,
+  navigation,
+}: any) {
+  const params = route.params || {};
 
-  const [nomeDoador, setNomeDoador] = useState('');
-  const [tipo, setTipo] = useState('');
-  const [quantidade, setQuantidade] = useState('');
-  const [observacao, setObservacao] = useState('');
+  const {
+    pontoId = '',
+    pontoNome = '',
+    doacao,
+  } = params;
+
+  const estaEditando = !!doacao;
+
+  const [nomeDoador, setNomeDoador] = useState(
+    doacao?.nomeDoador || ''
+  );
+
+  const [tipo, setTipo] = useState(
+    doacao?.tipo || ''
+  );
+
+  const [quantidade, setQuantidade] = useState(
+    doacao?.quantidade || ''
+  );
+
+  const [observacao, setObservacao] = useState(
+    doacao?.observacao || ''
+  );
 
   async function handleSalvarDoacao() {
     if (!nomeDoador || !tipo || !quantidade) {
@@ -28,18 +54,45 @@ export default function DoacaoScreen({ route, navigation }: any) {
       return;
     }
 
-    const novaDoacao = {
-      id: Date.now().toString(),
-      pontoId: pontoId || '',
-      pontoNome: pontoNome || '',
-      nomeDoador,
-      tipo,
-      quantidade,
-      observacao,
-      data: new Date().toISOString(),
-    };
-
     try {
+      if (estaEditando) {
+        const doacaoAtualizada: Doacao = {
+          ...doacao,
+          nomeDoador,
+          tipo,
+          quantidade,
+          observacao,
+        };
+
+        await atualizarDoacao(doacaoAtualizada);
+
+        Alert.alert(
+          'Doação atualizada!',
+          'As alterações foram salvas com sucesso.',
+          [
+            {
+              text: 'OK',
+              onPress: () => {
+                navigation.goBack();
+              },
+            },
+          ]
+        );
+
+        return;
+      }
+
+      const novaDoacao: Doacao = {
+        id: Date.now().toString(),
+        pontoId: pontoId || '',
+        pontoNome: pontoNome || '',
+        nomeDoador,
+        tipo,
+        quantidade,
+        observacao,
+        data: new Date().toISOString(),
+      };
+
       await salvarDoacao(novaDoacao);
 
       Alert.alert(
@@ -68,7 +121,9 @@ export default function DoacaoScreen({ route, navigation }: any) {
 
       Alert.alert(
         'Erro',
-        'Não foi possível salvar a doação.'
+        estaEditando
+          ? 'Não foi possível atualizar a doação.'
+          : 'Não foi possível salvar a doação.'
       );
     }
   }
@@ -76,7 +131,9 @@ export default function DoacaoScreen({ route, navigation }: any) {
   return (
     <ScrollView contentContainerStyle={styles.container}>
       <Text style={styles.titulo}>
-        Fazer doação
+        {estaEditando
+          ? 'Editar doação'
+          : 'Fazer doação'}
       </Text>
 
       <Text style={styles.ponto}>
@@ -84,7 +141,9 @@ export default function DoacaoScreen({ route, navigation }: any) {
       </Text>
 
       <Text style={styles.nomePonto}>
-        {pontoNome || 'Ponto não informado'}
+        {doacao?.pontoNome ||
+          pontoNome ||
+          'Ponto não informado'}
       </Text>
 
       <Text style={styles.label}>
@@ -133,7 +192,11 @@ export default function DoacaoScreen({ route, navigation }: any) {
       />
 
       <Button
-        title="Salvar doação"
+        title={
+          estaEditando
+            ? 'Salvar alterações'
+            : 'Salvar doação'
+        }
         onPress={handleSalvarDoacao}
       />
     </ScrollView>

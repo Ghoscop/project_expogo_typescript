@@ -61,3 +61,40 @@ export async function excluirDoacao(id: string): Promise<void> {
     throw error;
   }
 }
+
+export async function atualizarDoacao(doacao: Doacao): Promise<void> {
+  try {
+    const doacoes = await buscarDoacoes();
+
+    const indice = doacoes.findIndex(
+      (item) => item.id === doacao.id
+    );
+
+    if (indice === -1) {
+      throw new Error(
+        `Doação com id ${doacao.id} não encontrada.`
+      );
+    }
+
+    const novasDoacoes = [...doacoes];
+
+    novasDoacoes[indice] = doacao;
+
+    await AsyncStorage.setItem(
+      CHAVE_DOACOES,
+      JSON.stringify(novasDoacoes)
+    );
+
+    console.log(
+      'DOAÇÃO ATUALIZADA:',
+      doacao.id
+    );
+  } catch (error) {
+    console.log(
+      'ERRO AO ATUALIZAR DOAÇÃO:',
+      error
+    );
+
+    throw error;
+  }
+}

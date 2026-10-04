@@ -109,6 +109,19 @@ export default function DetalheDoacaoScreen({
       </View>
 
       <TouchableOpacity
+        style={styles.botaoEditar}
+        onPress={() => {
+            navigation.navigate('Doacao', {
+            doacao,
+            });
+        }}
+        >
+        <Text style={styles.textoBotaoEditar}>
+            Editar doação
+        </Text>
+     </TouchableOpacity>
+
+      <TouchableOpacity
         style={styles.botaoExcluir}
         onPress={handleExcluir}
       >
@@ -171,4 +184,18 @@ const styles = StyleSheet.create({
     fontSize: 16,
     fontWeight: '700',
   },
+
+  botaoEditar: {
+  backgroundColor: '#1B3A5C',
+  borderRadius: 14,
+  paddingVertical: 16,
+  alignItems: 'center',
+  marginTop: 20,
+},
+
+textoBotaoEditar: {
+  color: '#FFFFFF',
+  fontSize: 16,
+  fontWeight: '700',
+},
 });
