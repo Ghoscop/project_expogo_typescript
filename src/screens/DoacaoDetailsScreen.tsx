@@ -1,4 +1,5 @@
 import React from 'react';
+
 import {
   View,
   Text,
@@ -6,9 +7,14 @@ import {
   TouchableOpacity,
   Alert,
   ScrollView,
+  Image,
 } from 'react-native';
 
 import { excluirDoacao } from '../data/Doacao';
+
+import {
+  obterCategoriaInfo,
+} from '../utils/categoriasDoacao';
 
 export default function DetalheDoacaoScreen({
   route,
@@ -19,6 +25,10 @@ export default function DetalheDoacaoScreen({
   const dataFormatada = new Date(
     doacao.data
   ).toLocaleString('pt-BR');
+
+  const categoria = obterCategoriaInfo(
+    doacao.tipo
+  );
 
   function handleExcluir() {
     Alert.alert(
@@ -34,7 +44,9 @@ export default function DetalheDoacaoScreen({
           style: 'destructive',
           onPress: async () => {
             try {
-              await excluirDoacao(doacao.id);
+              await excluirDoacao(
+                doacao.id
+              );
 
               navigation.goBack();
             } catch (error) {
@@ -53,19 +65,63 @@ export default function DetalheDoacaoScreen({
     <ScrollView
       style={styles.scroll}
       contentContainerStyle={styles.container}
+      showsVerticalScrollIndicator={false}
     >
-      <Text style={styles.titulo}>
-        Detalhes da doação
-      </Text>
+
+      <View style={styles.header}>
+
+        <Text style={styles.titulo}>
+          Detalhes da doação
+        </Text>
+
+        <Text style={styles.subtitulo}>
+          Confira as informações registradas
+        </Text>
+
+      </View>
+
+      <View style={styles.imagemCard}>
+
+        <Image
+          source={{
+            uri: categoria.imagem,
+          }}
+          style={styles.imagem}
+        />
+
+        <View style={styles.imagemOverlay}>
+
+          <Text style={styles.categoriaIcone}>
+            {categoria.icone}
+          </Text>
+
+          <View>
+
+            <Text style={styles.categoriaLabel}>
+              CATEGORIA
+            </Text>
+
+            <Text style={styles.categoriaNome}>
+              {categoria.nome}
+            </Text>
+
+          </View>
+
+        </View>
+
+      </View>
 
       <View style={styles.card}>
+
         <Text style={styles.label}>
           Tipo de doação
         </Text>
 
-        <Text style={styles.valor}>
+        <Text style={styles.valorGrande}>
           {doacao.tipo}
         </Text>
+
+        <View style={styles.divisor} />
 
         <Text style={styles.label}>
           Quantidade
@@ -96,7 +152,8 @@ export default function DetalheDoacaoScreen({
         </Text>
 
         <Text style={styles.valor}>
-          {doacao.observacao || 'Nenhuma observação'}
+          {doacao.observacao ||
+            'Nenhuma observação'}
         </Text>
 
         <Text style={styles.label}>
@@ -106,29 +163,48 @@ export default function DetalheDoacaoScreen({
         <Text style={styles.valor}>
           {dataFormatada}
         </Text>
+
       </View>
 
       <TouchableOpacity
         style={styles.botaoEditar}
+        activeOpacity={0.85}
         onPress={() => {
-            navigation.navigate('Doacao', {
-            doacao,
-            });
+          navigation.navigate(
+            'Doacao',
+            {
+              doacao,
+            }
+          );
         }}
-        >
-        <Text style={styles.textoBotaoEditar}>
-            Editar doação
+      >
+
+        <Text style={styles.botaoEditarIcone}>
+          ✏️
         </Text>
-     </TouchableOpacity>
+
+        <Text style={styles.textoBotaoEditar}>
+          Editar doação
+        </Text>
+
+      </TouchableOpacity>
 
       <TouchableOpacity
         style={styles.botaoExcluir}
+        activeOpacity={0.85}
         onPress={handleExcluir}
       >
-        <Text style={styles.textoBotao}>
+
+        <Text style={styles.botaoExcluirIcone}>
+          🗑️
+        </Text>
+
+        <Text style={styles.textoBotaoExcluir}>
           Excluir doação
         </Text>
+
       </TouchableOpacity>
+
     </ScrollView>
   );
 }
@@ -136,7 +212,7 @@ export default function DetalheDoacaoScreen({
 const styles = StyleSheet.create({
   scroll: {
     flex: 1,
-    backgroundColor: '#F7F9F8',
+    backgroundColor: '#F4F7F6',
   },
 
   container: {
@@ -144,58 +220,138 @@ const styles = StyleSheet.create({
     paddingBottom: 40,
   },
 
+  header: {
+    marginBottom: 18,
+  },
+
   titulo: {
     fontSize: 28,
-    fontWeight: '800',
+    fontWeight: '900',
     color: '#1B3A5C',
-    marginTop: 20,
-    marginBottom: 20,
+  },
+
+  subtitulo: {
+    fontSize: 13,
+    color: '#7A8793',
+    marginTop: 4,
+  },
+
+  imagemCard: {
+    height: 210,
+    borderRadius: 20,
+    overflow: 'hidden',
+    marginBottom: 16,
+  },
+
+  imagem: {
+    width: '100%',
+    height: '100%',
+  },
+
+  imagemOverlay: {
+    position: 'absolute',
+    left: 15,
+    right: 15,
+    bottom: 15,
+    backgroundColor: 'rgba(27,58,92,0.9)',
+    borderRadius: 14,
+    padding: 11,
+    flexDirection: 'row',
+    alignItems: 'center',
+  },
+
+  categoriaIcone: {
+    fontSize: 28,
+    marginRight: 10,
+  },
+
+  categoriaLabel: {
+    color: '#B9D8C0',
+    fontSize: 9,
+    fontWeight: '900',
+  },
+
+  categoriaNome: {
+    color: '#FFFFFF',
+    fontSize: 16,
+    fontWeight: '900',
+    marginTop: 2,
   },
 
   card: {
     backgroundColor: '#FFFFFF',
-    borderRadius: 18,
-    padding: 20,
+    borderRadius: 20,
+    padding: 19,
   },
 
   label: {
-    fontSize: 14,
-    fontWeight: '700',
-    color: '#667085',
-    marginTop: 12,
+    fontSize: 12,
+    fontWeight: '800',
+    color: '#98A2B3',
+    marginTop: 13,
     marginBottom: 4,
+    textTransform: 'uppercase',
   },
 
-  valor: {
-    fontSize: 17,
+  valorGrande: {
+    fontSize: 21,
+    fontWeight: '900',
     color: '#1B3A5C',
   },
 
-  botaoExcluir: {
-    backgroundColor: '#C62828',
-    borderRadius: 14,
-    paddingVertical: 16,
-    alignItems: 'center',
-    marginTop: 20,
+  valor: {
+    fontSize: 16,
+    color: '#1B3A5C',
+    lineHeight: 22,
   },
 
-  textoBotao: {
-    color: '#FFFFFF',
-    fontSize: 16,
-    fontWeight: '700',
+  divisor: {
+    height: 1,
+    backgroundColor: '#EEF1F0',
+    marginTop: 14,
   },
 
   botaoEditar: {
-  backgroundColor: '#1B3A5C',
-  borderRadius: 14,
-  paddingVertical: 16,
-  alignItems: 'center',
-  marginTop: 20,
-},
+    backgroundColor: '#1B3A5C',
+    borderRadius: 15,
+    minHeight: 52,
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'center',
+    marginTop: 16,
+  },
 
-textoBotaoEditar: {
-  color: '#FFFFFF',
-  fontSize: 16,
-  fontWeight: '700',
-},
+  botaoEditarIcone: {
+    fontSize: 16,
+    marginRight: 8,
+  },
+
+  textoBotaoEditar: {
+    color: '#FFFFFF',
+    fontSize: 16,
+    fontWeight: '800',
+  },
+
+  botaoExcluir: {
+    backgroundColor: '#FFF1F1',
+    borderWidth: 1,
+    borderColor: '#FFD5D5',
+    borderRadius: 15,
+    minHeight: 52,
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'center',
+    marginTop: 10,
+  },
+
+  botaoExcluirIcone: {
+    fontSize: 16,
+    marginRight: 8,
+  },
+
+  textoBotaoExcluir: {
+    color: '#C62828',
+    fontSize: 16,
+    fontWeight: '800',
+  },
 });

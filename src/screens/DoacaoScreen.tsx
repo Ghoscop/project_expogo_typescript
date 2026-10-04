@@ -1,13 +1,17 @@
 import React, { useState } from 'react';
+
 import {
   View,
   Text,
   TextInput,
-  Button,
   StyleSheet,
   Alert,
   ScrollView,
+  TouchableOpacity,
+  SafeAreaView,
 } from 'react-native';
+
+import { Ionicons } from '@expo/vector-icons';
 
 import {
   salvarDoacao,
@@ -59,6 +63,7 @@ export default function DoacaoScreen({
         'Atenção',
         'Preencha seu nome, o tipo de doação e a quantidade.'
       );
+
       return;
     }
 
@@ -70,6 +75,7 @@ export default function DoacaoScreen({
         'Atenção',
         'A quantidade deve ser um número maior que zero.'
       );
+
       return;
     }
 
@@ -91,9 +97,7 @@ export default function DoacaoScreen({
           [
             {
               text: 'OK',
-              onPress: () => {
-                navigation.goBack();
-              },
+              onPress: () => navigation.goBack(),
             },
           ]
         );
@@ -129,9 +133,7 @@ export default function DoacaoScreen({
           },
           {
             text: 'Finalizar',
-            onPress: () => {
-              navigation.popToTop();
-            },
+            onPress: () => navigation.popToTop(),
           },
         ]
       );
@@ -148,128 +150,389 @@ export default function DoacaoScreen({
   }
 
   return (
-    <ScrollView
-    contentContainerStyle={styles.container}
-    keyboardShouldPersistTaps="handled"
-    >
-      <Text style={styles.titulo}>
-        {estaEditando
-          ? 'Editar doação'
-          : 'Fazer doação'}
-      </Text>
+    <SafeAreaView style={styles.safeArea}>
 
-      <Text style={styles.ponto}>
-        Ponto de apoio:
-      </Text>
+      <ScrollView
+        contentContainerStyle={styles.container}
+        keyboardShouldPersistTaps="handled"
+        showsVerticalScrollIndicator={false}
+      >
 
-      <Text style={styles.nomePonto}>
-        {doacao?.pontoNome ||
-          pontoNome ||
-          'Ponto não informado'}
-      </Text>
+        {/* HEADER */}
+        <View style={styles.header}>
 
-      <Text style={styles.label}>
-        Seu nome
-      </Text>
+          <TouchableOpacity
+            style={styles.voltar}
+            onPress={() => navigation.goBack()}
+          >
+            <Ionicons
+              name="arrow-back"
+              size={23}
+              color="#123B32"
+            />
+          </TouchableOpacity>
 
-      <TextInput
-        style={styles.input}
-        placeholder="Digite seu nome"
-        value={nomeDoador}
-        onChangeText={setNomeDoador}
-      />
+          <View>
+            <Text style={styles.headerTitulo}>
+              {estaEditando
+                ? 'Editar doação'
+                : 'Fazer doação'}
+            </Text>
 
-      <Text style={styles.label}>
-        Tipo de doação
-      </Text>
+            <Text style={styles.headerSubtitulo}>
+              Sua contribuição faz a diferença
+            </Text>
+          </View>
 
-      <TextInput
-        style={styles.input}
-        placeholder="Ex: Alimentos, roupas..."
-        value={tipo}
-        onChangeText={setTipo}
-      />
+        </View>
 
-      <Text style={styles.label}>
-        Quantidade
-      </Text>
+        {/* PONTO */}
+        <View style={styles.pontoCard}>
 
-      <TextInput
-        style={styles.input}
-        placeholder="Ex: 5"
-        value={quantidade}
-        onChangeText={(texto) => {
-          const valor = texto.replace(/[^0-9.,]/g, '');
-          setQuantidade(valor);
-        }}
-        keyboardType="numeric"
-      />
+          <View style={styles.pontoIcone}>
+            <Ionicons
+              name="location"
+              size={23}
+              color="#16834A"
+            />
+          </View>
 
-      <Text style={styles.label}>
-        Observação
-      </Text>
+          <View style={styles.pontoInfo}>
 
-      <TextInput
-        style={[styles.input, styles.textArea]}
-        placeholder="Alguma informação adicional?"
-        value={observacao}
-        onChangeText={setObservacao}
-        multiline
-      />
+            <Text style={styles.pontoLabel}>
+              Ponto de apoio
+            </Text>
 
-      <Button
-        title={
-          estaEditando
-            ? 'Salvar alterações'
-            : 'Salvar doação'
-        }
-        onPress={handleSalvarDoacao}
-      />
-    </ScrollView>
+            <Text style={styles.nomePonto}>
+              {doacao?.pontoNome ||
+                pontoNome ||
+                'Ponto não informado'}
+            </Text>
+
+          </View>
+
+        </View>
+
+        {/* FORMULÁRIO */}
+        <View style={styles.formulario}>
+
+          <Text style={styles.secaoTitulo}>
+            Informações da doação
+          </Text>
+
+          <Text style={styles.label}>
+            Seu nome
+          </Text>
+
+          <View style={styles.inputContainer}>
+
+            <Ionicons
+              name="person-outline"
+              size={20}
+              color="#98A2B3"
+            />
+
+            <TextInput
+              style={styles.input}
+              placeholder="Digite seu nome"
+              placeholderTextColor="#98A2B3"
+              value={nomeDoador}
+              onChangeText={setNomeDoador}
+            />
+
+          </View>
+
+          <Text style={styles.label}>
+            O que você deseja doar?
+          </Text>
+
+          <View style={styles.inputContainer}>
+
+            <Ionicons
+              name="gift-outline"
+              size={20}
+              color="#98A2B3"
+            />
+
+            <TextInput
+              style={styles.input}
+              placeholder="Ex: roupas, alimentos..."
+              placeholderTextColor="#98A2B3"
+              value={tipo}
+              onChangeText={setTipo}
+            />
+
+          </View>
+
+          <Text style={styles.dica}>
+            Você pode escrever livremente. O aplicativo
+            identifica a categoria automaticamente.
+          </Text>
+
+          <Text style={styles.label}>
+            Quantidade
+          </Text>
+
+          <View style={styles.inputContainer}>
+
+            <Ionicons
+              name="layers-outline"
+              size={20}
+              color="#98A2B3"
+            />
+
+            <TextInput
+              style={styles.input}
+              placeholder="Ex: 5"
+              placeholderTextColor="#98A2B3"
+              value={quantidade}
+              onChangeText={(texto) => {
+                const valor = texto.replace(
+                  /[^0-9.,]/g,
+                  ''
+                );
+
+                setQuantidade(valor);
+              }}
+              keyboardType="numeric"
+            />
+
+          </View>
+
+          <Text style={styles.label}>
+            Observação
+          </Text>
+
+          <View
+            style={[
+              styles.inputContainer,
+              styles.observacaoContainer,
+            ]}
+          >
+
+            <Ionicons
+              name="chatbubble-outline"
+              size={20}
+              color="#98A2B3"
+              style={styles.iconeObservacao}
+            />
+
+            <TextInput
+              style={[
+                styles.input,
+                styles.textArea,
+              ]}
+              placeholder="Alguma informação adicional?"
+              placeholderTextColor="#98A2B3"
+              value={observacao}
+              onChangeText={setObservacao}
+              multiline
+            />
+
+          </View>
+
+        </View>
+
+        {/* BOTÃO */}
+        <TouchableOpacity
+          style={styles.botaoSalvar}
+          activeOpacity={0.85}
+          onPress={handleSalvarDoacao}
+        >
+
+          <Ionicons
+            name={
+              estaEditando
+                ? 'checkmark-circle-outline'
+                : 'heart-outline'
+            }
+            size={22}
+            color="#FFFFFF"
+          />
+
+          <Text style={styles.textoBotao}>
+            {estaEditando
+              ? 'Salvar alterações'
+              : 'Registrar doação'}
+          </Text>
+
+        </TouchableOpacity>
+
+        <Text style={styles.rodape}>
+          Obrigado por fazer parte dessa corrente do bem. ❤️
+        </Text>
+
+      </ScrollView>
+
+    </SafeAreaView>
   );
 }
 
 const styles = StyleSheet.create({
-  container: {
-    padding: 20,
+  safeArea: {
+    flex: 1,
+    backgroundColor: '#F5F8F6',
   },
 
-  titulo: {
-    fontSize: 26,
-    fontWeight: 'bold',
+  container: {
+    padding: 20,
+    paddingBottom: 40,
+  },
+
+  header: {
+    flexDirection: 'row',
+    alignItems: 'center',
     marginBottom: 20,
   },
 
-  ponto: {
-    fontSize: 14,
-    color: '#666',
+  voltar: {
+    width: 46,
+    height: 46,
+    borderRadius: 15,
+    backgroundColor: '#FFFFFF',
+    justifyContent: 'center',
+    alignItems: 'center',
+    marginRight: 12,
+  },
+
+  headerTitulo: {
+    fontSize: 24,
+    fontWeight: '800',
+    color: '#123B32',
+  },
+
+  headerSubtitulo: {
+    fontSize: 12,
+    color: '#667085',
+    marginTop: 3,
+  },
+
+  pontoCard: {
+    backgroundColor: '#E8F7EF',
+    borderRadius: 18,
+    padding: 15,
+    flexDirection: 'row',
+    alignItems: 'center',
+    marginBottom: 22,
+  },
+
+  pontoIcone: {
+    width: 45,
+    height: 45,
+    borderRadius: 14,
+    backgroundColor: '#FFFFFF',
+    justifyContent: 'center',
+    alignItems: 'center',
+    marginRight: 12,
+  },
+
+  pontoInfo: {
+    flex: 1,
+  },
+
+  pontoLabel: {
+    color: '#16834A',
+    fontSize: 11,
+    fontWeight: '700',
+    marginBottom: 3,
   },
 
   nomePonto: {
+    color: '#123B32',
+    fontSize: 15,
+    fontWeight: '800',
+  },
+
+  formulario: {
+    backgroundColor: '#FFFFFF',
+    borderRadius: 20,
+    padding: 18,
+  },
+
+  secaoTitulo: {
     fontSize: 18,
-    fontWeight: 'bold',
-    marginBottom: 25,
+    color: '#123B32',
+    fontWeight: '800',
+    marginBottom: 4,
   },
 
   label: {
-    fontSize: 16,
-    fontWeight: 'bold',
-    marginBottom: 8,
-    marginTop: 12,
+    fontSize: 13,
+    color: '#344054',
+    fontWeight: '700',
+    marginTop: 17,
+    marginBottom: 7,
+  },
+
+  inputContainer: {
+    minHeight: 52,
+    borderWidth: 1,
+    borderColor: '#E2E8E5',
+    borderRadius: 15,
+    backgroundColor: '#FAFCFB',
+    paddingHorizontal: 14,
+    flexDirection: 'row',
+    alignItems: 'center',
   },
 
   input: {
-    borderWidth: 1,
-    borderColor: '#ccc',
-    borderRadius: 8,
-    padding: 12,
-    fontSize: 16,
-    backgroundColor: '#fff',
+    flex: 1,
+    marginLeft: 10,
+    fontSize: 15,
+    color: '#123B32',
+    paddingVertical: 12,
+  },
+
+  dica: {
+    fontSize: 11,
+    lineHeight: 16,
+    color: '#98A2B3',
+    marginTop: 7,
+  },
+
+  observacaoContainer: {
+    alignItems: 'flex-start',
+    minHeight: 110,
+  },
+
+  iconeObservacao: {
+    marginTop: 13,
   },
 
   textArea: {
-    height: 100,
+    minHeight: 90,
     textAlignVertical: 'top',
-    marginBottom: 20,
+  },
+
+  botaoSalvar: {
+    height: 54,
+    backgroundColor: '#16834A',
+    borderRadius: 16,
+    marginTop: 18,
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'center',
+    gap: 9,
+    elevation: 5,
+    shadowColor: '#16834A',
+    shadowOffset: {
+      width: 0,
+      height: 5,
+    },
+    shadowOpacity: 0.2,
+    shadowRadius: 8,
+  },
+
+  textoBotao: {
+    color: '#FFFFFF',
+    fontSize: 16,
+    fontWeight: '800',
+  },
+
+  rodape: {
+    textAlign: 'center',
+    color: '#98A2B3',
+    fontSize: 11,
+    marginTop: 16,
   },
 });
