@@ -81,39 +81,43 @@ export default function DoacoesScreen({
       .includes(busca.toLowerCase())
   );
 
- const resumo = doacoes.reduce(
-  (resultado, doacao) => {
-    const tipo = doacao.tipo.trim();
+  const resumo = doacoes.reduce(
+    (resultado, doacao) => {
+      const tipo = doacao.tipo.trim();
 
-    const quantidade = Number(
-      doacao.quantidade.replace(',', '.')
-    );
+      const quantidade = Number(
+        doacao.quantidade.replace(',', '.')
+      );
 
-    if (!tipo || !Number.isFinite(quantidade)) {
+      if (!tipo || !Number.isFinite(quantidade)) {
+        return resultado;
+      }
+
+      const tipoExistente = Object.keys(resultado).find(
+        (item) =>
+          item.toLowerCase() === tipo.toLowerCase()
+      );
+
+      if (tipoExistente) {
+        resultado[tipoExistente] += quantidade;
+      } else {
+        resultado[tipo] = quantidade;
+      }
+
       return resultado;
-    }
+    },
+    {} as Record<string, number>
+  );
 
-    resultado[tipo] =
-      (resultado[tipo] || 0) + quantidade;
-
-    return resultado;
-  },
-  {} as Record<string, number>
-);
-
-const resumoOrdenado = Object.entries(resumo).sort(
-  ([, quantidadeA], [, quantidadeB]) =>
-    quantidadeB - quantidadeA
-);
+  const resumoOrdenado = Object.entries(resumo).sort(
+    ([, quantidadeA], [, quantidadeB]) =>
+      quantidadeB - quantidadeA
+  );
 
   return (
     <View style={styles.container}>
       <Text style={styles.titulo}>
         Minhas doações
-      </Text>
-
-      <Text style={styles.titulo}>
-        Resumo das doações
       </Text>
 
       {doacoes.length > 0 && (
@@ -122,27 +126,30 @@ const resumoOrdenado = Object.entries(resumo).sort(
             Resumo das doações
           </Text>
 
-          {resumoOrdenado.map(([tipo, quantidade]) => (
-            <View
-              key={tipo}
-              style={styles.itemResumo}
-            >
-              <Text style={styles.tipoResumo}>
-                {tipo}
-              </Text>
+          {resumoOrdenado.map(
+            ([tipo, quantidade]) => (
+              <View
+                key={tipo}
+                style={styles.itemResumo}
+              >
+                <Text style={styles.tipoResumo}>
+                  {tipo}
+                </Text>
 
-              <Text style={styles.quantidadeResumo}>
-                {quantidade}
-              </Text>
-            </View>
-          ))}
+                <Text style={styles.quantidadeResumo}>
+                  {quantidade}
+                </Text>
+              </View>
+            )
+          )}
         </View>
       )}
 
       {doacoes.length === 0 ? (
         <View style={styles.vazio}>
           <Text style={styles.textoVazio}>
-            Você ainda não possui nenhuma doação registrada.
+            Você ainda não possui nenhuma doação
+            registrada.
           </Text>
 
           <TouchableOpacity
@@ -193,9 +200,12 @@ const resumoOrdenado = Object.entries(resumo).sort(
                 <DoacaoItemMemo
                   doacao={item}
                   onPress={() => {
-                    navigation.navigate('DetalheDoacao', {
-                      doacao: item,
-                    });
+                    navigation.navigate(
+                      'DetalheDoacao',
+                      {
+                        doacao: item,
+                      }
+                    );
                   }}
                 />
               )}
@@ -220,6 +230,49 @@ const styles = StyleSheet.create({
     color: '#1B3A5C',
     marginTop: 20,
     marginBottom: 20,
+  },
+
+  resumo: {
+    backgroundColor: '#FFFFFF',
+    borderRadius: 18,
+    padding: 16,
+    marginBottom: 18,
+    elevation: 3,
+    shadowColor: '#1B3A5C',
+    shadowOffset: {
+      width: 0,
+      height: 2,
+    },
+    shadowOpacity: 0.08,
+    shadowRadius: 6,
+  },
+
+  tituloResumo: {
+    fontSize: 18,
+    fontWeight: '800',
+    color: '#1B3A5C',
+    marginBottom: 12,
+  },
+
+  itemResumo: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    alignItems: 'center',
+    paddingVertical: 8,
+    borderBottomWidth: 1,
+    borderBottomColor: '#EEF1F0',
+  },
+
+  tipoResumo: {
+    fontSize: 15,
+    color: '#667085',
+    fontWeight: '600',
+  },
+
+  quantidadeResumo: {
+    fontSize: 17,
+    color: '#2E7D32',
+    fontWeight: '800',
   },
 
   card: {
@@ -320,47 +373,4 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     paddingHorizontal: 20,
   },
-
-  resumo: {
-  backgroundColor: '#FFFFFF',
-  borderRadius: 18,
-  padding: 16,
-  marginBottom: 18,
-  elevation: 3,
-  shadowColor: '#1B3A5C',
-  shadowOffset: {
-    width: 0,
-    height: 2,
-  },
-  shadowOpacity: 0.08,
-  shadowRadius: 6,
-},
-
-tituloResumo: {
-  fontSize: 18,
-  fontWeight: '800',
-  color: '#1B3A5C',
-  marginBottom: 12,
-},
-
-itemResumo: {
-  flexDirection: 'row',
-  justifyContent: 'space-between',
-  alignItems: 'center',
-  paddingVertical: 8,
-  borderBottomWidth: 1,
-  borderBottomColor: '#EEF1F0',
-},
-
-tipoResumo: {
-  fontSize: 15,
-  color: '#667085',
-  fontWeight: '600',
-},
-
-quantidadeResumo: {
-  fontSize: 17,
-  color: '#2E7D32',
-  fontWeight: '800',
-},
 });
