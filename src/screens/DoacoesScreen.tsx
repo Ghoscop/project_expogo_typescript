@@ -106,7 +106,9 @@ export default function DoacoesScreen({
             <DoacaoItemMemo
               doacao={item}
               onPress={() => {
-                // Detalhe será implementado na Issue #10
+                navigation.navigate('DetalheDoacao', {
+                  doacao: item,
+                });
               }}
             />
           )}

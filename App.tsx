@@ -5,6 +5,7 @@ import PontosScreen from './src/screens/PontosScreen';
 import ProductDetailsScreen from './src/screens/ProductDetailsScreen';
 import DoacaoScreen from './src/screens/DoacaoScreen';
 import DoacoesScreen from './src/screens/DoacoesScreen';
+import DetalheDoacaoScreen from './src/screens/DoacaoDetailsScreen';
 
 const Stack = createNativeStackNavigator();
 
@@ -33,6 +34,14 @@ export default function App() {
           component={DoacaoScreen}
           options={{
             title: 'Fazer Doação',
+          }}
+        />
+
+        <Stack.Screen
+          name="DetalheDoacao"
+          component={DetalheDoacaoScreen}
+          options={{
+            title: 'Detalhes da doação',
           }}
         />
 
