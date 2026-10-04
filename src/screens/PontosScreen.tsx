@@ -1,4 +1,3 @@
-import React from 'react';
 import {
   View,
   Text,
@@ -6,7 +5,6 @@ import {
   FlatList,
   StyleSheet,
   TouchableOpacity,
-  TextInput,
   SafeAreaView,
 } from 'react-native';
 
@@ -70,23 +68,6 @@ export default function PontosScreen() {
           <Text style={styles.subtitulo}>
             Encontre um ponto e faça a diferença
           </Text>
-
-        </View>
-
-        {/* BUSCA */}
-        <View style={styles.buscaContainer}>
-
-          <Ionicons
-            name="search-outline"
-            size={21}
-            color="#667085"
-          />
-
-          <TextInput
-            style={styles.inputBusca}
-            placeholder="Buscar por nome ou região..."
-            placeholderTextColor="#98A2B3"
-          />
 
         </View>
 
