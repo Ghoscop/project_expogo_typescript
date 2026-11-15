@@ -13,7 +13,15 @@
 11. Confirmar que ela foi removida.
 12. Fechar e abrir novamente o aplicativo.
 13. Conferir a persistência dos dados.
+14. Conferir a aba de perfil
 
 ## Decisão técnica
 
 Foi feito com AsyncStorage para armazenar as doações localmente nos dispositivo. O armazenamento local permite manter o histórico das doações mesmo após o fechamento do aplicativo, sem necessidade de um servidor ou banco de dados externo.
+
+## Ideias Futuras
+
+1. Implementar criação de perfil
+2. Fazer a parte de notificações funcionar
+3. Criar Pontos caso tenha permissão ao invés de ser fixo
+4. Fazer banco de dados Online
