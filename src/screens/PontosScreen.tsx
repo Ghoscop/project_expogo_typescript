@@ -345,26 +345,6 @@ const styles = StyleSheet.create({
     marginTop: 5,
   },
 
-  buscaContainer: {
-    marginHorizontal: 20,
-    marginBottom: 16,
-    height: 50,
-    backgroundColor: '#FFFFFF',
-    borderRadius: 16,
-    borderWidth: 1,
-    borderColor: '#E2E8E5',
-    paddingHorizontal: 15,
-    flexDirection: 'row',
-    alignItems: 'center',
-  },
-
-  inputBusca: {
-    flex: 1,
-    marginLeft: 10,
-    fontSize: 15,
-    color: '#123B32',
-  },
-
   lista: {
     paddingHorizontal: 20,
     paddingBottom: 110,
