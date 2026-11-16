@@ -108,9 +108,9 @@ export default function InicioScreen() {
               <TouchableOpacity
                 style={styles.botaoDoar}
                 activeOpacity={0.85}
-                onPress={() =>
-                  navigation.navigate('EscolherPonto')
-                }
+            onPress={() =>
+              navigation.navigate('EscolherPonto')
+            }
               >
                 <Text style={styles.botaoDoarTexto}>
                   Fazer uma doação

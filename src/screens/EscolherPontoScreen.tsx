@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 
 import {
   View,
@@ -8,17 +8,39 @@ import {
   StyleSheet,
   TouchableOpacity,
   SafeAreaView,
+  ActivityIndicator,
 } from 'react-native';
 
 import { Ionicons } from '@expo/vector-icons';
 import { useNavigation } from '@react-navigation/native';
-
-import { pontos } from '../data/Ponto';
+import { listar, type Ponto } from '../services/pontosService';
 
 export default function EscolherPontoScreen() {
   const navigation = useNavigation<any>();
 
-  function escolherPonto(ponto: any) {
+  const [pontos, setPontos] = useState<Ponto[]>([]);
+  const [carregando, setCarregando] = useState(true);
+  const [erro, setErro] = useState('');
+
+  useEffect(() => {
+    carregarPontos();
+  }, []);
+
+  async function carregarPontos() {
+    try {
+      setCarregando(true);
+      setErro('');
+
+      const resultado = await listar();
+      setPontos(resultado);
+    } catch {
+      setErro('Não foi possível carregar os pontos. Verifique sua conexão.');
+    } finally {
+      setCarregando(false);
+    }
+  }
+
+  function escolherPonto(ponto: Ponto) {
     navigation.navigate('Doacao', {
       pontoId: ponto.id,
       pontoNome: ponto.nome,
@@ -120,10 +142,20 @@ export default function EscolherPontoScreen() {
             >
 
               {/* IMAGEM */}
-              <Image
-                source={{ uri: item.imagem }}
-                style={styles.imagem}
+          {item.imagem ? (
+            <Image
+              source={{ uri: item.imagem }}
+              style={styles.imagem}
+            />
+          ) : (
+            <View style={[styles.imagem, styles.imagemVazia]}>
+              <Ionicons
+                name="image-outline"
+                size={32}
+                color="#98A2B3"
               />
+            </View>
+          )}
 
               {/* INFORMAÇÕES */}
               <View style={styles.info}>
@@ -397,6 +429,12 @@ const styles = StyleSheet.create({
     color: '#16834A',
     fontWeight: '700',
   },
+
+  imagemVazia: {
+  backgroundColor: '#E8EEEB',
+  justifyContent: 'center',
+  alignItems: 'center',
+},
 
   /* BOTÃO SELECIONAR */
 
