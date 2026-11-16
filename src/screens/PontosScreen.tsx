@@ -1,5 +1,4 @@
-
-import { useEffect, useRef, useState } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 
 import {
   View,
@@ -14,7 +13,15 @@ import {
 } from 'react-native';
 
 import { Ionicons } from '@expo/vector-icons';
-import { useNavigation } from '@react-navigation/native';
+import {
+  useNavigation,
+  useFocusEffect,
+} from '@react-navigation/native';
+
+import {
+  buscarIdsFavoritos,
+  alternarFavorito,
+} from '../services/favoritosService';
 
 import {
   buscarPagina,
@@ -32,12 +39,53 @@ export default function PontosScreen() {
   const [carregandoMais, setCarregandoMais] = useState(false);
   const [erro, setErro] = useState<string | null>(null);
   const [atualizacao, setAtualizacao] = useState(0);
+  const [favoritos, setFavoritos] = useState<string[]>([]);
 
   const paginaAtual = useRef(0);
   const requisicaoAtual = useRef(0);
   const carregandoMaisRef = useRef(false);
   const temMaisRef = useRef(false);
   const paginasSolicitadas = useRef(new Set<number>());
+
+  useFocusEffect(
+    React.useCallback(() => {
+      let ativo = true;
+
+      async function carregarFavoritos() {
+        try {
+          const ids = await buscarIdsFavoritos();
+
+          if (ativo) {
+            setFavoritos(ids);
+          }
+        } catch {
+          if (ativo) {
+            setFavoritos([]);
+          }
+        }
+      }
+
+      carregarFavoritos();
+
+      return () => {
+        ativo = false;
+      };
+    }, [])
+  );
+
+  async function controlarFavorito(id: string) {
+    try {
+      const favoritado = await alternarFavorito(id);
+
+      setFavoritos((anteriores) =>
+        favoritado
+          ? [...anteriores.filter((item) => item !== id), id]
+          : anteriores.filter((item) => item !== id)
+      );
+    } catch {
+      setErro('Não foi possível atualizar os favoritos.');
+    }
+  }
 
   useEffect(() => {
     const identificador = ++requisicaoAtual.current;
@@ -68,11 +116,9 @@ export default function PontosScreen() {
         setPontos(resultado.content);
         paginaAtual.current = resultado.page.number;
 
-        const existeProxima =
+        temMaisRef.current =
           resultado.page.number + 1 < resultado.page.totalPages;
-
-        temMaisRef.current = existeProxima;
-      } catch (error) {
+      } catch {
         if (identificador !== requisicaoAtual.current) {
           return;
         }
@@ -130,11 +176,9 @@ export default function PontosScreen() {
 
       paginaAtual.current = resultado.page.number;
 
-      const existeProxima =
+      temMaisRef.current =
         resultado.page.number + 1 < resultado.page.totalPages;
-
-      temMaisRef.current = existeProxima;
-    } catch (error) {
+    } catch {
       if (identificador === requisicaoAtual.current) {
         paginasSolicitadas.current.delete(proximaPagina);
 
@@ -155,6 +199,8 @@ export default function PontosScreen() {
   }
 
   function renderizarPonto({ item }: { item: Ponto }) {
+    const estaFavoritado = favoritos.includes(item.id);
+
     return (
       <TouchableOpacity
         style={styles.card}
@@ -189,6 +235,18 @@ export default function PontosScreen() {
                 {item.tipo || 'Ponto de apoio'}
               </Text>
             </View>
+
+            <TouchableOpacity
+              style={styles.botaoFavorito}
+              activeOpacity={0.7}
+              onPress={() => controlarFavorito(item.id)}
+            >
+              <Ionicons
+                name={estaFavoritado ? 'heart' : 'heart-outline'}
+                size={23}
+                color={estaFavoritado ? '#E5484D' : '#98A2B3'}
+              />
+            </TouchableOpacity>
           </View>
 
           <Text style={styles.nome} numberOfLines={2}>
@@ -278,6 +336,7 @@ export default function PontosScreen() {
       return (
         <View style={styles.estadoVazio}>
           <ActivityIndicator size="large" color="#16834A" />
+
           <Text style={styles.textoEstado}>
             Carregando pontos...
           </Text>
@@ -336,7 +395,6 @@ export default function PontosScreen() {
   return (
     <SafeAreaView style={styles.safeArea}>
       <View style={styles.container}>
-        {/* HEADER */}
         <View style={styles.header}>
           <View style={styles.logoArea}>
             <View style={styles.logo}>
@@ -372,7 +430,6 @@ export default function PontosScreen() {
           </TouchableOpacity>
         </View>
 
-        {/* TÍTULO */}
         <View style={styles.tituloArea}>
           <Text style={styles.titulo}>
             Pontos de Apoio
@@ -383,7 +440,6 @@ export default function PontosScreen() {
           </Text>
         </View>
 
-        {/* BUSCA */}
         <View style={styles.buscaContainer}>
           <Ionicons
             name="search-outline"
@@ -412,7 +468,6 @@ export default function PontosScreen() {
           )}
         </View>
 
-        {/* LISTA */}
         <FlatList
           data={pontos}
           keyExtractor={(item) => item.id}
@@ -424,7 +479,7 @@ export default function PontosScreen() {
           onEndReached={carregarMais}
           onEndReachedThreshold={0.5}
         />
-        {/* NAVEGAÇÃO INFERIOR */}
+
         <View style={styles.bottomNav}>
           <TouchableOpacity
             style={styles.navItem}
@@ -456,11 +511,11 @@ export default function PontosScreen() {
             </Text>
           </TouchableOpacity>
 
-        <TouchableOpacity
-          style={styles.botaoCentral}
-          activeOpacity={0.85}
-          onPress={() => navigation.navigate('FormularioPonto')}
-        >
+          <TouchableOpacity
+            style={styles.botaoCentral}
+            activeOpacity={0.85}
+            onPress={() => navigation.navigate('FormularioPonto')}
+          >
             <Ionicons
               name="add"
               size={32}
@@ -654,6 +709,7 @@ const styles = StyleSheet.create({
 
   linhaTopo: {
     flexDirection: 'row',
+    alignItems: 'center',
     marginBottom: 5,
   },
 
@@ -678,6 +734,17 @@ const styles = StyleSheet.create({
     color: '#16834A',
     fontSize: 11,
     fontWeight: '800',
+  },
+
+  botaoFavorito: {
+    width: 44,
+    height: 44,
+    borderRadius: 22,
+    justifyContent: 'center',
+    alignItems: 'center',
+    marginLeft: 'auto',
+    marginTop: -10,
+    marginRight: -8,
   },
 
   nome: {

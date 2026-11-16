@@ -18,15 +18,11 @@ export default function PerfilScreen() {
   return (
     <SafeAreaView style={styles.safeArea}>
       <View style={styles.container}>
-
         <ScrollView
           showsVerticalScrollIndicator={false}
           contentContainerStyle={styles.scroll}
         >
-
-          {/* HEADER */}
           <View style={styles.header}>
-
             <View style={styles.avatar}>
               <Ionicons
                 name="person"
@@ -42,12 +38,9 @@ export default function PerfilScreen() {
             <Text style={styles.subtitulo}>
               Gerencie suas informações e doações
             </Text>
-
           </View>
 
-          {/* USUÁRIO */}
           <View style={styles.cardPerfil}>
-
             <View style={styles.avatarPequeno}>
               <Ionicons
                 name="person-outline"
@@ -71,21 +64,16 @@ export default function PerfilScreen() {
               size={22}
               color="#16834A"
             />
-
           </View>
 
-          {/* OPÇÕES */}
           <Text style={styles.secao}>
             Minha conta
           </Text>
 
-          {/* MINHAS DOAÇÕES */}
           <TouchableOpacity
             style={styles.opcao}
             activeOpacity={0.8}
-            onPress={() =>
-              navigation.navigate('Doacoes')
-            }
+            onPress={() => navigation.navigate('Doacoes')}
           >
             <View style={styles.iconeOpcao}>
               <Ionicons
@@ -112,13 +100,10 @@ export default function PerfilScreen() {
             />
           </TouchableOpacity>
 
-          {/* NOTIFICAÇÕES */}
           <TouchableOpacity
             style={styles.opcao}
             activeOpacity={0.8}
-            onPress={() =>
-              navigation.navigate('Notificacoes')
-            }
+            onPress={() => navigation.navigate('Notificacoes')}
           >
             <View style={styles.iconeOpcao}>
               <Ionicons
@@ -145,13 +130,10 @@ export default function PerfilScreen() {
             />
           </TouchableOpacity>
 
-          {/* SOBRE */}
           <TouchableOpacity
             style={styles.opcao}
             activeOpacity={0.8}
-            onPress={() =>
-              navigation.navigate('Sobre')
-            }
+            onPress={() => navigation.navigate('Sobre')}
           >
             <View style={styles.iconeOpcao}>
               <Ionicons
@@ -178,7 +160,6 @@ export default function PerfilScreen() {
             />
           </TouchableOpacity>
 
-          {/* EXPLORAR */}
           <Text style={styles.secao}>
             Explorar
           </Text>
@@ -186,9 +167,7 @@ export default function PerfilScreen() {
           <TouchableOpacity
             style={styles.opcao}
             activeOpacity={0.8}
-            onPress={() =>
-              navigation.navigate('Pontos')
-            }
+            onPress={() => navigation.navigate('Pontos')}
           >
             <View style={styles.iconeOpcao}>
               <Ionicons
@@ -215,9 +194,37 @@ export default function PerfilScreen() {
             />
           </TouchableOpacity>
 
-          {/* MENSAGEM */}
-          <View style={styles.mensagem}>
+          <TouchableOpacity
+            style={styles.opcao}
+            activeOpacity={0.8}
+            onPress={() => navigation.navigate('MeusPontos')}
+          >
+            <View style={styles.iconeOpcao}>
+              <Ionicons
+                name="heart"
+                size={21}
+                color="#16834A"
+              />
+            </View>
 
+            <View style={styles.textosOpcao}>
+              <Text style={styles.tituloOpcao}>
+                Meus pontos
+              </Text>
+
+              <Text style={styles.descricaoOpcao}>
+                Consulte os pontos que você favoritou
+              </Text>
+            </View>
+
+            <Ionicons
+              name="chevron-forward"
+              size={20}
+              color="#98A2B3"
+            />
+          </TouchableOpacity>
+
+          <View style={styles.mensagem}>
             <View style={styles.mensagemIcone}>
               <Ionicons
                 name="heart"
@@ -227,7 +234,6 @@ export default function PerfilScreen() {
             </View>
 
             <View style={styles.mensagemTexto}>
-
               <Text style={styles.mensagemTitulo}>
                 Juntos fazemos mais
               </Text>
@@ -236,23 +242,15 @@ export default function PerfilScreen() {
                 Cada doação ajuda a construir uma
                 comunidade mais solidária.
               </Text>
-
             </View>
-
           </View>
-
         </ScrollView>
 
-        {/* NAVEGAÇÃO INFERIOR */}
         <View style={styles.bottomNav}>
-
-          {/* INÍCIO */}
           <TouchableOpacity
             style={styles.navItem}
             activeOpacity={0.8}
-            onPress={() =>
-              navigation.navigate('Pontos')
-            }
+            onPress={() => navigation.navigate('Inicio')}
           >
             <Ionicons
               name="home-outline"
@@ -265,13 +263,10 @@ export default function PerfilScreen() {
             </Text>
           </TouchableOpacity>
 
-          {/* PONTOS */}
           <TouchableOpacity
             style={styles.navItem}
             activeOpacity={0.8}
-            onPress={() =>
-              navigation.navigate('Pontos')
-            }
+            onPress={() => navigation.navigate('Pontos')}
           >
             <Ionicons
               name="location-outline"
@@ -284,13 +279,10 @@ export default function PerfilScreen() {
             </Text>
           </TouchableOpacity>
 
-          {/* NOVA DOAÇÃO */}
           <TouchableOpacity
             style={styles.botaoCentral}
             activeOpacity={0.85}
-            onPress={() =>
-              navigation.navigate('EscolherPonto')
-            }
+            onPress={() => navigation.navigate('EscolherPonto')}
           >
             <Ionicons
               name="add"
@@ -299,13 +291,10 @@ export default function PerfilScreen() {
             />
           </TouchableOpacity>
 
-          {/* DOAÇÕES */}
           <TouchableOpacity
             style={styles.navItem}
             activeOpacity={0.8}
-            onPress={() =>
-              navigation.navigate('Doacoes')
-            }
+            onPress={() => navigation.navigate('Doacoes')}
           >
             <Ionicons
               name="heart-outline"
@@ -318,7 +307,6 @@ export default function PerfilScreen() {
             </Text>
           </TouchableOpacity>
 
-          {/* PERFIL */}
           <TouchableOpacity
             style={styles.navItem}
             activeOpacity={0.8}
@@ -333,9 +321,7 @@ export default function PerfilScreen() {
               Perfil
             </Text>
           </TouchableOpacity>
-
         </View>
-
       </View>
     </SafeAreaView>
   );
