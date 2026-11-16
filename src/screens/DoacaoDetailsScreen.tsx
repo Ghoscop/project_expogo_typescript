@@ -10,7 +10,7 @@ import {
   Image,
 } from 'react-native';
 
-import { excluirDoacao } from '../data/Doacao';
+import { excluirDoacao } from '../services/doacaoService';
 
 import {
   obterCategoriaInfo,

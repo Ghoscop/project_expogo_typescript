@@ -18,7 +18,7 @@ import { useFocusEffect } from '@react-navigation/native';
 import {
   buscarDoacoes,
   Doacao,
-} from '../data/Doacao';
+} from '../services/doacaoService';
 
 type Categoria = {
   nome: string;
