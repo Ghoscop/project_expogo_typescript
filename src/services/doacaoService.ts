@@ -1,4 +1,4 @@
-import Constants from 'expo-constants';
+import { get, post, put, del } from './api';
 
 export type Doacao = {
   id: string;
@@ -9,6 +9,15 @@ export type Doacao = {
   quantidade: string;
   observacao: string;
   data: string;
+};
+
+export type DoacaoInput = {
+  pontoId?: string;
+  pontoNome: string;
+  nomeDoador: string;
+  tipo: string;
+  quantidade: string;
+  observacao: string;
 };
 
 type DoacaoRequest = {
@@ -33,13 +42,17 @@ type DoacaoResponse = {
   criadoEm: string;
 };
 
-type PaginaDoacoes = {
+export type PaginaDoacoes = {
   content: DoacaoResponse[];
+  page: {
+    size: number;
+    number: number;
+    totalElements: number;
+    totalPages: number;
+  };
 };
 
-const HOST = Constants.expoConfig?.hostUri?.split(':')[0] || 'localhost';
-
-const API_URL = `http://${HOST}:8080/api/v1/doacoes`;
+const BASE_PATH = '/doacoes';
 
 function converterDoacao(dados: DoacaoResponse): Doacao {
   return {
@@ -54,95 +67,71 @@ function converterDoacao(dados: DoacaoResponse): Doacao {
   };
 }
 
-function converterRequest(doacao: Doacao): DoacaoRequest {
+function converterRequest(doacao: DoacaoInput): DoacaoRequest {
   return {
-    tipoItem: doacao.tipo,
+    tipoItem: doacao.tipo.trim(),
     quantidade: Number(doacao.quantidade),
-    pontoDestino: doacao.pontoNome || 'Ponto não informado',
+    pontoDestino: doacao.pontoNome,
     pontoId: doacao.pontoId,
     pontoNome: doacao.pontoNome,
-    nomeDoador: doacao.nomeDoador,
-    observacao: doacao.observacao,
+    nomeDoador: doacao.nomeDoador.trim(),
+    observacao: doacao.observacao.trim(),
   };
-}
-
-async function verificarResposta(resposta: Response) {
-  if (!resposta.ok) {
-    const mensagem = await resposta.text();
-    throw new Error(mensagem || 'Erro ao acessar a API de doações.');
-  }
 }
 
 export async function buscarDoacoes(
   filtro = '',
   page = 0,
-  size = 100
-): Promise<Doacao[]> {
-  const resposta = await fetch(
-    `${API_URL}/filtro?filtro=${encodeURIComponent(filtro)}&page=${page}&size=${size}`
+  size = 10
+): Promise<{ content: Doacao[]; page: PaginaDoacoes['page'] }> {
+  const params = new URLSearchParams({
+    page: String(page),
+    size: String(size),
+    sort: 'criadoEm,desc',
+  });
+
+  if (filtro.trim()) {
+    params.set('filtro', filtro.trim());
+  }
+
+  const resposta = await get<PaginaDoacoes>(
+    `${BASE_PATH}/filtro?${params.toString()}`
   );
 
-  await verificarResposta(resposta);
-
-  const dados: PaginaDoacoes = await resposta.json();
-
-  return dados.content.map(converterDoacao);
+  return {
+    content: resposta.content.map(converterDoacao),
+    page: resposta.page,
+  };
 }
 
-export async function buscarDoacaoPorId(
-  id: string
-): Promise<Doacao> {
-  const resposta = await fetch(`${API_URL}/${id}`);
-
-  await verificarResposta(resposta);
-
-  const dados: DoacaoResponse = await resposta.json();
-
-  return converterDoacao(dados);
+export async function buscarDoacaoPorId(id: string): Promise<Doacao> {
+  const resposta = await get<DoacaoResponse>(`${BASE_PATH}/${id}`);
+  return converterDoacao(resposta);
 }
 
 export async function salvarDoacao(
-  doacao: Doacao
+  doacao: DoacaoInput
 ): Promise<Doacao> {
-  const resposta = await fetch(API_URL, {
-    method: 'POST',
-    headers: {
-      'Content-Type': 'application/json',
-    },
-    body: JSON.stringify(converterRequest(doacao)),
-  });
+  const resposta = await post<DoacaoResponse>(
+    BASE_PATH,
+    converterRequest(doacao)
+  );
 
-  await verificarResposta(resposta);
-
-  const dados: DoacaoResponse = await resposta.json();
-
-  return converterDoacao(dados);
+  return converterDoacao(resposta);
 }
 
 export async function atualizarDoacao(
-  doacao: Doacao
+  id: string,
+  doacao: DoacaoInput
 ): Promise<Doacao> {
-  const resposta = await fetch(`${API_URL}/${doacao.id}`, {
-    method: 'PUT',
-    headers: {
-      'Content-Type': 'application/json',
-    },
-    body: JSON.stringify(converterRequest(doacao)),
-  });
+  const resposta = await put<DoacaoResponse>(
+    `${BASE_PATH}/${id}`,
+    converterRequest(doacao)
+  );
 
-  await verificarResposta(resposta);
-
-  const dados: DoacaoResponse = await resposta.json();
-
-  return converterDoacao(dados);
+  return converterDoacao(resposta);
 }
 
-export async function excluirDoacao(
-  id: string
-): Promise<void> {
-  const resposta = await fetch(`${API_URL}/${id}`, {
-    method: 'DELETE',
-  });
-
-  await verificarResposta(resposta);
+export function excluirDoacao(id: string): Promise<void> {
+  return del(`${BASE_PATH}/${id}`);
 }

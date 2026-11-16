@@ -17,8 +17,8 @@ import { Ionicons } from '@expo/vector-icons';
 import {
   salvarDoacao,
   atualizarDoacao,
-  Doacao,
-} from '../services/doacaoService';
+  type DoacaoInput,
+} from '../services/doacoesService';
 
 export default function DoacaoScreen({
   route,
@@ -35,8 +35,8 @@ export default function DoacaoScreen({
   const estaEditando = !!doacao;
 
   const destino = (
-  doacao?.pontoNome || pontoNome || ''
-).trim();
+    doacao?.pontoNome || pontoNome || ''
+  ).trim();
 
   const [nomeDoador, setNomeDoador] = useState(
     doacao?.nomeDoador || ''
@@ -47,7 +47,7 @@ export default function DoacaoScreen({
   );
 
   const [quantidade, setQuantidade] = useState(
-    doacao?.quantidade || ''
+    String(doacao?.quantidade || '')
   );
 
   const [observacao, setObservacao] = useState(
@@ -63,7 +63,7 @@ export default function DoacaoScreen({
       quantidade.replace(',', '.')
     );
 
-    const destino = (
+    const destinoAtual = (
       doacao?.pontoNome || pontoNome || ''
     ).trim();
 
@@ -90,7 +90,7 @@ export default function DoacaoScreen({
       return;
     }
 
-    if (!destino) {
+    if (!destinoAtual) {
       Alert.alert(
         'Atenção',
         'Selecione um ponto de apoio antes de registrar a doação.'
@@ -98,19 +98,36 @@ export default function DoacaoScreen({
       return;
     }
 
+    const dadosDoacao: DoacaoInput = {
+      pontoId: doacao?.pontoId || pontoId || '',
+      pontoNome: destinoAtual,
+      nomeDoador: nomeDoador.trim(),
+      tipo: tipo.trim(),
+      quantidade: String(quantidadeNumerica),
+      observacao: observacao.trim(),
+    };
+
     setSalvando(true);
 
     try {
       if (estaEditando) {
-        const doacaoAtualizada: Doacao = {
-          ...doacao,
+        const dadosDoacao: DoacaoInput = {
+          pontoId: doacao.pontoId || pontoId || '',
+          pontoNome: destino,
           nomeDoador: nomeDoador.trim(),
           tipo: tipo.trim(),
           quantidade: String(quantidadeNumerica),
           observacao: observacao.trim(),
         };
 
-        await atualizarDoacao(doacaoAtualizada);
+        await atualizarDoacao(doacao.id, {
+          pontoId: doacao.pontoId || pontoId || '',
+          pontoNome: destino,
+          nomeDoador: nomeDoador.trim(),
+          tipo: tipo.trim(),
+          quantidade: String(quantidadeNumerica),
+          observacao: observacao.trim(),
+        });
 
         Alert.alert(
           'Doação atualizada!',
@@ -126,18 +143,7 @@ export default function DoacaoScreen({
         return;
       }
 
-      const novaDoacao: Doacao = {
-        id: '',
-        pontoId: pontoId || '',
-        pontoNome: destino,
-        nomeDoador: nomeDoador.trim(),
-        tipo: tipo.trim(),
-        quantidade: String(quantidadeNumerica),
-        observacao: observacao.trim(),
-        data: '',
-      };
-
-      await salvarDoacao(novaDoacao);
+      await salvarDoacao(dadosDoacao);
 
       Alert.alert(
         'Doação registrada!',
