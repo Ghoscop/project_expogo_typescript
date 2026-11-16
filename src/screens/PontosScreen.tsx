@@ -456,11 +456,11 @@ export default function PontosScreen() {
             </Text>
           </TouchableOpacity>
 
-          <TouchableOpacity
-            style={styles.botaoCentral}
-            activeOpacity={0.85}
-            onPress={() => navigation.navigate('EscolherPonto')}
-          >
+        <TouchableOpacity
+          style={styles.botaoCentral}
+          activeOpacity={0.85}
+          onPress={() => navigation.navigate('FormularioPonto')}
+        >
             <Ionicons
               name="add"
               size={32}

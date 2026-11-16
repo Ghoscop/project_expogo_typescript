@@ -11,6 +11,7 @@ import EscolherPontoScreen from './src/screens/EscolherPontoScreen';
 import NotificacoesScreen from './src/screens/NotificacoesScreen';
 import InicioScreen from './src/screens/InicioScreen';
 import SobreScreen from './src/screens/SobreScreen';
+import FormularioPontoScreen from './src/screens/FormularioPontoScreen';
 
 const Stack = createNativeStackNavigator();
 
@@ -46,6 +47,11 @@ export default function App() {
         name="DetalheDoacao"
         component={DetalheDoacaoScreen}
       />
+
+      <Stack.Screen
+      name="FormularioPonto"
+      component={FormularioPontoScreen}
+     />
 
       <Stack.Screen
         name="Doacoes"
