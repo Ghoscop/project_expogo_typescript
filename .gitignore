@@ -39,3 +39,10 @@ yarn-error.*
 # generated native folders
 /ios
 /android
+
+
+Add-Content .\api\.gitignore "`ndata/"
+api/data/
+
+.vscode/
+api/mvn-output.txt

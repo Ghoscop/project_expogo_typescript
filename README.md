@@ -25,3 +25,36 @@ Foi feito com AsyncStorage para armazenar as doações localmente nos dispositiv
 2. Fazer a parte de notificações funcionar
 3. Criar Pontos caso tenha permissão ao invés de ser fixo
 4. Fazer banco de dados Online
+
+## Busca de pontos com paginação
+
+A API disponibiliza um endpoint para consultar pontos de apoio com filtros e paginação.
+
+### 1. Listar todos os pontos
+
+**Requisição:**
+
+GET http://localhost:8080/api/v1/pontos/filtro
+
+**Resposta:**
+
+```json
+{
+  "content": [
+    {
+      "id": "uuid-gerado-pelo-banco",
+      "nome": "Ponto Mão Amiga - Centro",
+      "endereco": "Endereço demonstrativo - Centro, Goiânia - GO",
+      "bairro": "Centro",
+      "horario": "Segunda a sexta, das 08:00 às 17:00",
+      "tipo": "coleta",
+      "imagem": null
+    }
+  ],
+  "page": {
+    "size": 10,
+    "totalElements": 25,
+    "totalPages": 3,
+    "number": 0
+  }
+}
